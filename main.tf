@@ -15,11 +15,14 @@ resource "aws_ecr_repository" "this" {
   }
 
   dynamic "encryption_configuration" {
-    for_each = try([each.value.encryption_configuration], [])
+    for_each = [each.value.encryption_configuration]
+    #    for_each = try([each.value.encryption_configuration], [])
 
     content {
-      encryption_type = try(encryption_configuration.value.encryption_type, null)
-      kms_key         = can(encryption_configuration.value.kms_key) ? encryption_configuration.value.kms_key : can(encryption_configuration.value.kms_alias) ? try(var.upstream.kms[encryption_configuration.value.kms_alias].arn, data.aws_kms_key.existing[encryption_configuration.value.kms_alias].arn) : null
+      #encryption_type = try(encryption_configuration.value.encryption_type, null)
+      encryption_type = encryption_configuration.value.encryption_type
+      #kms_key         = can(encryption_configuration.value.kms_key) ? encryption_configuration.value.kms_key : can(encryption_configuration.value.kms_alias) ? try(var.upstream.kms[encryption_configuration.value.kms_alias].arn, data.aws_kms_key.existing[encryption_configuration.value.kms_alias].arn) : null
+      kms_key         = encryption_configuration.value.kms_key
     }
   }
 

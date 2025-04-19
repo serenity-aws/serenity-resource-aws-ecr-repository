@@ -12,10 +12,17 @@ variable "resources" {
   type = any
 }
 
+variable "this" {
+  type    = any
+  default = {}
+}
+
 variable "upstream" {
-  type = any
+  type    = any
+  default = {}
 }
 
 variable "tags" {
-  type = map(any)
+  type    = map(any)
+  default = {}
 }
